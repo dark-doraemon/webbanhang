@@ -15,6 +15,7 @@ const FoodCard = ({ Food ,onClick }) => {
 			{/* <div >
 				<button className='btn_ThemVaoGioHang' >Thêm vào giỏ hàng</button>
 			</div> */}
+			
 		</div>
 	);
 }

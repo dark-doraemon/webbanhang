@@ -8,42 +8,43 @@ const API_URL = 'https://www.themealdb.com/api/json/v1/1/filter.php?i';
 function App() {
 
 	const [Food, setFood] = useState([]);
-	const [searchFood, setSearchFood] = useState('');
-	const SearchFood = async (foodname) => {
-		if (foodname == '') {
-			const response = await fetch(`${API_URL}`);
-			const data = await response.json();
-			setFood(data.meals);
-		}
-		else {
-			const response = await fetch(`${API_URL}?i=${foodname}`);
-			const data = await response.json();
-			setFood(data.meals);
-		}
+	const [query, setQuery] = useState('');
+
+	const fileterFood = Food.filter(item =>{
+		return item.strMeal.toLowerCase().includes(query.toLocaleLowerCase())
+	})
+
+	const SearchFood = async () => {
+		
+		const response = await fetch(`${API_URL}`);
+		const data = await response.json();
+		setFood(data.meals);
+		
+		
 	}
 	useEffect(() => {
-		SearchFood('')
+		SearchFood()
 	}, [])
 
+	console.log(query)
 	return (
 		<div className="app">
-			<h1>Web bán đồ ăn vặt</h1>
+			<h1>Đồ ăn vặt .CC</h1>
 
 			<div className="search">
 				<input placeholder="Tìm kiếm món ăn"
-					value={searchFood}
-					onChange={(e) => { setSearchFood(e.target.value) }}></input>
+					value={query}
+					onChange={(e) => { setQuery(e.target.value) }}></input>
 
 				<img src={SearchIcon}
-					onClick={() => { SearchFood(searchFood) }}
 					alt="Search"></img>
 			</div>
 			{
-				Food?.length > 0
+				fileterFood?.length > 0
 					? (
 						<div className="container">
 							{
-								Food.map((Food) => (
+								fileterFood.map((Food) => (
 									<FoodCard onClick={() => console.log(Food.strMeal)} Food={Food} />
 
 								))
